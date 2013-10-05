@@ -39,18 +39,13 @@ namespace Reflector.AddIns
             if (item is ITypeDeclaration)
             {
                 ITypeDeclaration typeDeclaration = (ITypeDeclaration) item;
-                fullAssemblyName = typeDeclaration.Namespace + "." + typeDeclaration.Name;
+                fullAssemblyName = String.Format("{0}.{1}", typeDeclaration.Namespace, typeDeclaration.Name);
             }
             else if (item is IMethodDeclaration)
             {
                 IMethodDeclaration methodDeclaration = (IMethodDeclaration) item;
-                
-                ITypeDeclaration typeDeclaration = methodDeclaration.DeclaringType as ITypeDeclaration;
-                if (typeDeclaration != null)
-                {
-                    fullAssemblyName = typeDeclaration.Namespace + "." + typeDeclaration.Name;
-                }
-                fullAssemblyName = fullAssemblyName + "." + methodDeclaration.Name;
+                ITypeDeclaration typeDeclaration = (ITypeDeclaration)methodDeclaration.DeclaringType;
+                fullAssemblyName = String.Format("{0}.{1}.{2}", typeDeclaration.Namespace, typeDeclaration.Name, methodDeclaration.Name);
             }
 
             if (!String.IsNullOrEmpty(fullAssemblyName))
