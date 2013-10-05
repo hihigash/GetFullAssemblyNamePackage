@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using Reflector.Application;
 using Reflector.CodeModel;
@@ -26,6 +27,8 @@ namespace Reflector.AddIns
             _commandBarManager = serviceProvider.GetTypedService<ICommandBarManager>();
             _assemblyBrowser = serviceProvider.GetTypedService<IAssemblyBrowser>();
 
+            _assemblyBrowser.ActiveItemChanged += AssemblyBrowserActiveItemChanged;
+
             _separator1 = _commandBarManager.CommandBars["Browser.TypeDeclaration"].Items.AddSeparator();
             _button1 = _commandBarManager.CommandBars["Browser.TypeDeclaration"].Items.AddButton(@"Copy Full Assembly Name", CopyFullAssemblyNameButtonClick);
 
@@ -34,6 +37,12 @@ namespace Reflector.AddIns
 
             _separator3 = _commandBarManager.CommandBars["Edit"].Items.AddSeparator();
             _button3 = _commandBarManager.CommandBars["Edit"].Items.AddButton(@"Copy Full Assembly Name", CopyFullAssemblyNameButtonClick, Keys.Alt|Keys.Control|Keys.O);
+        }
+
+        void AssemblyBrowserActiveItemChanged(object sender, EventArgs e)
+        {
+            object item = _assemblyBrowser.ActiveItem;
+            _button3.Enabled = (item is ITypeDeclaration || item is IMethodDeclaration);
         }
 
         private void CopyFullAssemblyNameButtonClick(object sender, EventArgs eventArgs)
@@ -57,6 +66,8 @@ namespace Reflector.AddIns
             {
                 Clipboard.SetText(fullAssemblyName);                
             }
+
+            Debug.WriteLine(fullAssemblyName);
         }
 
         /// <summary>
