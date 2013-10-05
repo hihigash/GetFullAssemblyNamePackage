@@ -39,8 +39,14 @@ namespace Reflector.AddIns
             _button3 = _commandBarManager.CommandBars["Edit"].Items.AddButton(@"Copy Full Assembly Name", CopyFullAssemblyNameButtonClick, Keys.Alt|Keys.Control|Keys.O);
         }
 
+        /// <summary>
+        /// Assembly Browser の要素が変更された場合に呼び出されます。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void AssemblyBrowserActiveItemChanged(object sender, EventArgs e)
         {
+            // サポートしていないタイプの要素だった場合はボタンを無効にする。
             object item = _assemblyBrowser.ActiveItem;
             _button3.Enabled = (item is ITypeDeclaration || item is IMethodDeclaration);
         }
