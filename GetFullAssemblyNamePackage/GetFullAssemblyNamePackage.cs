@@ -14,6 +14,8 @@ namespace Reflector.AddIns
         private ICommandBarButton _button1;
         private ICommandBarSeparator _separator2;
         private ICommandBarButton _button2;
+        private ICommandBarSeparator _separator3;
+        private ICommandBarButton _button3;
 
         /// <summary>
         /// .NET Reflector が plug-in をロードした際に呼び出します。
@@ -29,6 +31,9 @@ namespace Reflector.AddIns
 
             _separator2 = _commandBarManager.CommandBars["Browser.MethodDeclaration"].Items.AddSeparator();
             _button2 = _commandBarManager.CommandBars["Browser.MethodDeclaration"].Items.AddButton(@"Copy Full Assembly Name", CopyFullAssemblyNameButtonClick);
+
+            _separator3 = _commandBarManager.CommandBars["Edit"].Items.AddSeparator();
+            _button3 = _commandBarManager.CommandBars["Edit"].Items.AddButton(@"Copy Full Assembly Name", CopyFullAssemblyNameButtonClick, Keys.Alt|Keys.Control|Keys.O);
         }
 
         private void CopyFullAssemblyNameButtonClick(object sender, EventArgs eventArgs)
@@ -64,6 +69,9 @@ namespace Reflector.AddIns
 
             _commandBarManager.CommandBars["Browser.MethodDeclaration"].Items.Remove(_separator2);
             _commandBarManager.CommandBars["Browser.MethodDeclaration"].Items.Remove(_button2);
+
+            _commandBarManager.CommandBars["Edit"].Items.Remove(_separator3);
+            _commandBarManager.CommandBars["Edit"].Items.Remove(_button3);
         }
     }
 }
